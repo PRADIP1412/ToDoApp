@@ -40,20 +40,17 @@ public class Register extends HttpServlet {
             int rowsInserted = ps.executeUpdate();
 
             if (rowsInserted > 0) {
-                // Get generated user_id
                 var rs = ps.getGeneratedKeys();
                 int user_id = -1;
                 if (rs.next()) {
                     user_id = rs.getInt(1);
                 }
-
-                // Store user session
+                
                 HttpSession session = req.getSession();
                 session.setAttribute("user_id", user_id);
                 session.setAttribute("username", name);
                 session.setAttribute("email", email);
 
-                // Redirect to ToDo page
                 resp.sendRedirect("login.jsp");
             } else {
                 out.print("<h3 style='color:red'>Registration failed. Try again.</h3>");
@@ -61,8 +58,8 @@ public class Register extends HttpServlet {
                 rd.include(req, resp);
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Print in the console
-            out.print("<h3 style='color:red'>Error: " + e.getMessage() + "</h3>"); // Show error in browser
+            e.printStackTrace();
+            out.print("<h3 style='color:red'>Error: " + e.getMessage() + "</h3>"); 
         }
 
     }
