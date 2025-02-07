@@ -17,16 +17,14 @@ import jakarta.servlet.http.HttpSession;
 public class Delete extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Get session and validate user
         HttpSession session = req.getSession();
-        Integer user_id = (Integer) session.getAttribute("user_id"); // Get user_id from session
+        Integer user_id = (Integer) session.getAttribute("user_id"); 
         
         if (user_id == null) {
-            resp.sendRedirect("login.jsp"); // Redirect if user is not logged in
+            resp.sendRedirect("login.jsp"); 
             return;
         }
-
-        // Get todo id from request
+        
         int todo_id = Integer.parseInt(req.getParameter("id"));
         
         Connection conn = null;
@@ -35,8 +33,6 @@ public class Delete extends HttpServlet {
         
         try {
             conn = DatabaseConnection.getConnection();
-            
-            // Step 1: Check if the to-do belongs to the logged-in user
             String checkQuery = "SELECT user_id FROM todos WHERE id = ?";
             ps = conn.prepareStatement(checkQuery);
             ps.setInt(1, todo_id);
@@ -46,7 +42,6 @@ public class Delete extends HttpServlet {
                 int db_user_id = rs.getInt("user_id");
                 
                 if (db_user_id != user_id) {
-                    // If the to-do does not belong to the logged-in user, deny access
                     resp.getWriter().write("Unauthorized access!");
                     return;
                 }
@@ -54,8 +49,6 @@ public class Delete extends HttpServlet {
                 resp.getWriter().write("Todo not found!");
                 return;
             }
-            
-            // Step 2: Delete the todo
             String deleteQuery = "DELETE FROM todos WHERE id = ? AND user_id = ?";
             ps = conn.prepareStatement(deleteQuery);
             ps.setInt(1, todo_id);
@@ -64,7 +57,7 @@ public class Delete extends HttpServlet {
             int rowsAffected = ps.executeUpdate();
             
             if (rowsAffected > 0) {
-                resp.sendRedirect("toDo.jsp"); // Redirect to the to-do list
+                resp.sendRedirect("toDo.jsp"); 
             } else {
                 resp.getWriter().write("Failed to delete todo!");
             }
