@@ -34,20 +34,16 @@ public class Login extends HttpServlet {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Retrieve user details
                 int user_id = rs.getInt("user_id");
                 String userEmail = rs.getString("email");
 
-                // Start session and save user_id & username
                 HttpSession session = req.getSession();
                 session.setAttribute("user_id", user_id);
                 session.setAttribute("username", username);
                 session.setAttribute("email", userEmail);
 
-                // Redirect to ToDo page
                 resp.sendRedirect("toDo.jsp");
             } else {
-                // Login failed, show error message
                 out.print("<h3 style='color:red'>Username or password incorrect</h3>");
                 RequestDispatcher rd = req.getRequestDispatcher("/login.jsp");
                 rd.include(req, resp);
