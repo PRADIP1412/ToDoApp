@@ -88,10 +88,10 @@
     </tr>
 
     <%
-    Integer user_id = (Integer) session.getAttribute("user_id"); // Get user ID from session
+    Integer user_id = (Integer) session.getAttribute("user_id"); 
     
     if (user_id == null) {
-        response.sendRedirect("login.jsp"); // Redirect if user is not logged in
+        response.sendRedirect("login.jsp"); 
         return;
     }
 
@@ -117,9 +117,9 @@
             <td><%= targetDate %></td>
             <td><%= status %></td>
             <td>
-   				<a href="edit.jsp?id=<%= id %>">Edit</a>
-    			<a href="DeleteServlet?id=<%= id %>" onclick="return confirm('Are you sure you want to delete this task?')">Delete</a>
-			</td>
+   		<a href="edit.jsp?id=<%= id %>">Edit</a>
+    		<a href="DeleteServlet?id=<%= id %>" onclick="return confirm('Are you sure you want to delete this task?')">Delete</a>
+	    </td>
         </tr>
     <%
         }
